@@ -1,0 +1,8 @@
+{
+  "name": "godstocks-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GodStocks web frontend: landing page, authentication and dashboard",
+  "scripts": { "start": "node dev-server.js" },
+  "engines": { "node": ">=18" }
+}

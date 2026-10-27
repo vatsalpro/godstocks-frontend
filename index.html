@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign in | GodStocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;
+--bg:#F7F6F2;--bg2:#EFEEE8;--surface:#fff;--text:#171A18;--text2:#626963;--muted:#858A84;
+--green:#124C38;--green-h:#0C392B;--green-s:#E8F0E9;--border:#E3E3DC;--ok:#26734D;--err:#B42318;
+--serif:"DM Serif Display",Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--r:6px;--t:180ms ease;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:120px;scroll-behavior:smooth}
+.sec{max-width:1680px;width:100%;margin:0 auto;padding:88px 48px 8px}
+.sec .eyebrow{animation:none}.sec h2{font:400 clamp(32px,3.8vw,52px)/1.1 var(--serif);letter-spacing:-.01em;margin:0 0 12px}
+.sec .intro{color:var(--text2);max-width:640px;margin:0 0 40px;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{position:relative;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.85);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:12px;padding:32px 30px;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 8px 24px rgba(18,76,56,.06);transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .25s}
+.card:hover{transform:translateY(-5px);border-color:rgba(18,76,56,.25);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 18px 40px rgba(18,76,56,.14)}
+.card .ic{width:44px;height:44px;border-radius:10px;background:var(--green-s);display:grid;place-items:center;margin-bottom:16px;transition:background .25s,transform .25s}
+.card:hover .ic{background:var(--green);transform:scale(1.06) rotate(-4deg)}.card:hover .ic svg{stroke:#fff}
+.card .ic svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+.card h3{font:600 16px var(--sans);margin:0 0 6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.card p{margin:0;color:var(--text2);font-size:14px}
+.badge{font:500 11px var(--sans);letter-spacing:.04em;padding:2px 8px;border-radius:99px;background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
+.step{position:relative;padding:24px 22px 22px;border-top:2px solid var(--border);transition:border-color .4s}
+.step.in{border-color:var(--green)}
+.step::before{counter-increment:s;content:"0" counter(s);font:400 34px var(--serif);color:var(--green);display:block;margin-bottom:8px}
+.step b{display:block;margin-bottom:4px}.step span{color:var(--text2);font-size:14px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.plan{text-align:left}.plan .pr2{font:400 34px var(--serif);margin:6px 0 2px}.plan small{color:var(--muted)}
+.cta{margin:88px auto 32px;max-width:1584px;width:calc(100% - 96px);text-align:center;padding:48px 24px;border-radius:16px;background:var(--green);color:#fff;position:relative;overflow:hidden}
+.cta::after{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.07);right:-80px;top:-120px;animation:drift 14s ease-in-out infinite alternate}
+.cta h2{font:400 clamp(26px,3vw,36px) var(--serif);margin:0 0 8px}.cta p{margin:0 0 22px;opacity:.85}
+.cta a{display:inline-block;background:#fff;color:var(--green);padding:11px 24px;border-radius:var(--r);font-weight:600;transition:transform .2s,box-shadow .2s}.cta a:hover{text-decoration:none;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+.js .card.rv.in{transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .25s}
+@media(max-width:1024px){.grid,.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid,.steps{grid-template-columns:1fr}.sec{padding:56px 20px 8px}.cta{width:calc(100% - 40px)}}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 var(--sans);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:3px}
+[hidden]{display:none!important}
+body::before,body::after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(70px);pointer-events:none}
+body::before{width:520px;height:520px;left:-120px;top:10%;background:rgba(18,76,56,.16);animation:drift 22s ease-in-out infinite alternate}
+body::after{width:460px;height:460px;right:-100px;bottom:0;background:rgba(190,170,120,.22);animation:drift 26s ease-in-out infinite alternate-reverse}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;border-bottom:1px solid rgba(227,227,220,.8);background:rgba(247,246,242,.68);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4)}
+.bar{max-width:1680px;margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;gap:40px}
+.logo{display:flex;align-items:center;gap:10px;font:600 17px var(--sans);color:var(--text);letter-spacing:-.01em}
+.logo:hover{text-decoration:none}
+nav{display:flex;gap:28px;margin-left:auto;font-size:14px}
+nav a{color:var(--text2)}nav a:hover{color:var(--text);text-decoration:none}
+.signin-top{border:1px solid var(--border);padding:7px 16px;border-radius:var(--r);color:var(--text);font-size:14px;font-weight:500;background:var(--surface);transition:border-color var(--t)}
+.signin-top:hover{border-color:var(--green);text-decoration:none}
+main{flex:1;max-width:1680px;width:100%;margin:0 auto;padding:72px 48px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(400px,500px);gap:120px;align-items:center}
+.eyebrow{font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--green);margin:0 0 20px}
+h1{font:400 clamp(44px,5.4vw,76px)/1.05 var(--serif);letter-spacing:-.015em;margin:0 0 20px}
+.lede{font-size:18px;color:var(--text2);max-width:560px;margin:0 0 40px}
+.feats{list-style:none;margin:0 0 44px;padding:0;display:grid;gap:24px;max-width:560px}
+.feats li{display:grid;grid-template-columns:24px 1fr;gap:16px}
+.feats svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.feats b{display:block;font-weight:600;font-size:15px}.feats span{color:var(--text2);font-size:14px}
+.preview{border:1px solid rgba(255,255,255,.75);background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border-radius:10px;max-width:600px;overflow:hidden;box-shadow:0 8px 30px rgba(18,76,56,.08)}
+.ph{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)}
+.ph b{color:var(--text);font-weight:500}
+.preview svg{display:block;width:100%;height:auto}
+.pr{display:grid;grid-template-columns:1fr auto auto;gap:16px;padding:9px 16px;border-top:1px solid var(--border);font-size:13px;font-variant-numeric:tabular-nums}
+.pr .up{color:var(--ok)}.pr .dn{color:var(--err)}
+.note{font-size:11.5px;color:var(--muted);padding:8px 16px;background:var(--bg);border-top:1px solid var(--border)}
+.panel{background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.8);-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);border-radius:12px;padding:48px 44px;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 20px 50px rgba(18,76,56,.10)}
+.panel h2{font:400 32px/1.15 var(--serif);margin:0 0 8px}
+.panel p.sub{color:var(--text2);margin:0 0 24px;font-size:14.5px}
+[role=tablist]{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);margin-bottom:24px}
+[role=tab]{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 0;font:500 14px var(--sans);color:var(--muted);cursor:pointer;transition:color var(--t),border-color var(--t)}
+[role=tab][aria-selected=true]{color:var(--green);border-color:var(--green)}
+[role=tab]:hover{color:var(--text)}
+.f{margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.in{position:relative}
+input[type=email],input[type=password],input[type=text],input[type=tel]{width:100%;height:44px;border:1px solid var(--border);border-radius:var(--r);padding:0 12px;font:inherit;color:var(--text);background:var(--surface);transition:border-color var(--t),box-shadow var(--t)}
+input:hover{border-color:#cfcfc6}
+input:focus{outline:0;border-color:var(--green);box-shadow:0 0 0 3px var(--green-s)}
+input[aria-invalid=true]{border-color:var(--err)}
+.in input{padding-right:64px}
+.tg{position:absolute;right:4px;top:4px;height:36px;padding:0 10px;background:none;border:0;color:var(--text2);font:500 13px var(--sans);cursor:pointer;border-radius:4px}
+.tg:hover{color:var(--text)}
+.err{color:var(--err);font-size:13px;margin-top:6px;display:none}
+.err.on{display:block}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;margin:4px 0 22px}
+.row label{display:flex;gap:8px;align-items:center;font-weight:400;margin:0;color:var(--text2)}
+.row input{accent-color:var(--green);width:16px;height:16px;margin:0}
+.btn{width:100%;height:46px;border:0;border-radius:var(--r);background:var(--green);color:#fff;font:500 15px var(--sans);cursor:pointer;transition:background var(--t);display:flex;align-items:center;justify-content:center;gap:10px}
+.btn:hover{background:var(--green-h)}
+.btn[disabled]{opacity:.75;cursor:default}
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;display:none}
+.btn[disabled] .spin{display:block}
+@keyframes s{to{transform:rotate(360deg)}}
+.alert{border:1px solid #f1c9c5;background:#fdf3f2;color:var(--err);border-radius:var(--r);padding:10px 12px;font-size:13.5px;margin-bottom:16px;display:none}
+.alert.on{display:block}
+.alt{text-align:center;font-size:14px;color:var(--text2);margin:20px 0 0}
+.legal{font-size:12.5px;color:var(--muted);text-align:center;margin:20px 0 0}
+.hint{font-size:12.5px;color:var(--muted);margin-top:6px}
+footer{border-top:1px solid var(--border)}
+.ft{max-width:1680px;margin:0 auto;padding:24px 48px;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;font-size:13px;color:var(--muted)}
+.ft .logo{font-size:14px;color:var(--text2)}
+.ft nav{margin:0;gap:20px;font-size:13px}.ft .c{margin-left:auto}
+dialog{border:1px solid var(--border);border-radius:8px;max-width:520px;width:calc(100% - 32px);padding:28px;color:var(--text)}
+dialog::backdrop{background:rgba(23,26,24,.35)}
+dialog h3{font:400 24px var(--serif);margin:0 0 12px}dialog li{margin-bottom:8px;color:var(--text2);font-size:14px}
+dialog button{margin-top:12px;height:40px;padding:0 20px;border:1px solid var(--border);background:var(--surface);border-radius:var(--r);font:500 14px var(--sans);cursor:pointer}
+.tick{display:flex;gap:32px;align-items:center;max-width:1680px;margin:0 auto;padding:8px 48px;border-top:1px solid rgba(227,227,220,.8);font-size:13px;font-variant-numeric:tabular-nums;overflow-x:auto;white-space:nowrap}
+.tick .ti{display:flex;gap:8px;align-items:baseline}.tick .ti b{font-weight:600}.tick .ti em{font-style:normal;color:var(--muted)}
+.tick .ts{margin-left:auto;color:var(--muted);font-size:12px}
+.top2 .tick{padding:0;border:0;max-width:none;margin:0;overflow:visible}
+#info h3{margin-bottom:8px}#info p{color:var(--text2);font-size:14px;margin:0 0 12px}
+#info table{width:100%;border-collapse:collapse;font-size:14px}#info td{padding:8px 0;border-bottom:1px solid var(--border)}#info td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@keyframes drift{to{transform:translate(60px,-40px) scale(1.12)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.eyebrow,h1,.lede,.feats li,.preview{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+.eyebrow{animation-delay:.05s}h1{animation-delay:.12s}.lede{animation-delay:.2s}
+.feats li:nth-child(1){animation-delay:.28s}.feats li:nth-child(2){animation-delay:.36s}.feats li:nth-child(3){animation-delay:.44s}.preview{animation-delay:.52s}
+.panel{animation:rise .45s cubic-bezier(.2,.7,.2,1) both}
+.preview svg>path:last-of-type{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.6s .8s ease-out forwards}
+.preview svg>path:first-of-type{animation:fade 1s 1.2s ease-out both}
+.up-only:not([hidden]),.in-only:not([hidden]),.alert.on{animation:fade .22s ease both}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(18,76,56,.22)}.btn:active{transform:none}
+.btn{transition:background var(--t),transform var(--t),box-shadow var(--t)}
+.alert.ok{border-color:#bfdcca;background:#f0f8f2;color:var(--ok)}
+.demo{margin-top:18px;padding:10px 12px;border:1px dashed #cfd6cf;border-radius:var(--r);background:rgba(232,240,233,.6);font-size:12.5px;color:var(--text2)}.demo b{color:var(--green);font-weight:600;margin-right:4px}
+.done{text-align:center;padding:12px 0}.done svg{width:56px;height:56px;margin-bottom:12px;animation:pop .4s cubic-bezier(.2,.9,.3,1.3) both}
+.done circle{fill:var(--green-s);stroke:none}.done path{fill:none;stroke:var(--green);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:30;stroke-dashoffset:30;animation:draw .5s .25s ease-out forwards}
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh;animation:fade .3s both}
+.side{border-right:1px solid var(--border);background:rgba(255,255,255,.5);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);padding:20px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.side .logo{padding:4px 10px 20px}
+.nv{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:var(--r);color:var(--text2);background:none;border:0;font:500 14px var(--sans);cursor:pointer;text-align:left;transition:background var(--t),color var(--t)}
+.nv:hover{background:var(--bg2);color:var(--text)}.nv[aria-current=page]{background:var(--green-s);color:var(--green)}
+.nv svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.top2{display:flex;justify-content:space-between;align-items:center;padding:14px 32px;border-bottom:1px solid var(--border)}
+.pop{position:relative}
+.av{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;border:0;font:600 13px var(--sans);cursor:pointer}
+.menu{position:absolute;right:0;top:42px;min-width:210px;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 12px 32px rgba(23,26,24,.12);padding:6px;opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .18s,transform .18s;z-index:20}
+.menu.on{opacity:1;transform:none;pointer-events:auto}
+.menu button,.menu div{display:block;width:100%;text-align:left;padding:8px 10px;border:0;background:none;border-radius:4px;font:14px var(--sans);color:var(--text)}
+.menu button{cursor:pointer}.menu button:hover{background:var(--bg2)}.menu div{color:var(--muted);font-size:12.5px;word-break:break-all}
+.page{padding:32px 40px;max-width:1500px;animation:fade .25s both}.page:focus{outline:0}
+.page h1{font-size:34px;margin:0 0 4px;animation:none}.page .sub{color:var(--text2);margin:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.6);margin:24px 0}
+.stats>div{padding:16px 20px}.stats>div+div{border-left:1px solid var(--border)}
+.stats small{color:var(--muted);font-size:12.5px;display:block}.stats b{font:600 24px var(--sans);font-variant-numeric:tabular-nums}
+.chartbox{border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.6);padding:16px 20px;margin-bottom:24px;position:relative}
+.chartbox .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.rng button{border:0;background:none;padding:5px 10px;border-radius:4px;font:500 13px var(--sans);color:var(--muted);cursor:pointer;transition:background var(--t),color var(--t)}
+.rng button[aria-pressed=true]{background:var(--green-s);color:var(--green)}
+.ln{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s ease-out forwards}
+.tbl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+.tbl th{font-weight:500;color:var(--muted);font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--border);text-align:right;cursor:pointer;user-select:none}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:11px 10px;border-bottom:1px solid var(--border);text-align:right}
+.tbl tbody tr{transition:background var(--t)}.tbl tbody tr:hover{background:rgba(232,240,233,.5)}
+.up{color:var(--ok)}.dn{color:var(--err)}
+.tools{display:flex;gap:10px;margin:20px 0 12px;flex-wrap:wrap}.tools input{height:38px;width:240px}
+.tools select{height:38px;border:1px solid var(--border);border-radius:var(--r);padding:0 10px;font:inherit;background:#fff}
+.sm{height:36px;padding:0 14px;border:1px solid var(--border);background:#fff;border-radius:var(--r);font:500 13.5px var(--sans);cursor:pointer;transition:border-color var(--t)}.sm:hover{border-color:var(--green)}
+.sm.pri{background:var(--green);color:#fff;border-color:var(--green)}.sm.pri:hover{background:var(--green-h)}
+.toasts{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;z-index:50}
+.toast{background:#fff;border:1px solid var(--border);border-left:3px solid var(--ok);border-radius:6px;padding:10px 14px;font-size:14px;box-shadow:0 10px 28px rgba(23,26,24,.12);animation:rise .25s both}.toast.er{border-left-color:var(--err)}
+.empty{padding:32px;text-align:center;color:var(--muted)}
+@media(max-width:768px){.app{grid-template-columns:1fr;padding-bottom:64px}.side{position:fixed;bottom:0;top:auto;height:auto;flex-direction:row;width:100%;z-index:10;border-right:0;border-top:1px solid var(--border);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(247,246,242,.92)}.side .logo{display:none}.nv{flex:1;flex-direction:column;gap:2px;font-size:11.5px;justify-content:center}.page{padding:20px}.top2{padding:12px 20px}.stats{grid-template-columns:1fr}.stats>div+div{border-left:0;border-top:1px solid var(--border)}.toasts{right:12px;left:12px;bottom:84px}}
+@media(max-width:1024px){main{grid-template-columns:1fr minmax(340px,420px);gap:48px;padding:48px 24px}.bar,.tick,.ft,.sec{padding-left:24px;padding-right:24px}.preview{display:none}}
+@media(max-width:768px){
+.bar{padding:0 20px;gap:16px}nav.top a:not(.keep){display:none}
+main{grid-template-columns:1fr;gap:40px;padding:32px 20px}
+.panel{order:-1;padding:28px 20px}.hero{order:1}
+h1{font-size:38px}.lede{font-size:16px;margin-bottom:28px}.signin-top{display:none}
+.ft{padding:20px}.ft .c{margin-left:0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:1ms!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+<a class="logo" href="/" aria-label="GodStocks home"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="5" fill="#124C38"/><path d="M5 18l5-5 4 3 7-8" fill="none" stroke="#F7F6F2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>GodStocks</a>
+<nav class="top" aria-label="Primary"><a href="#features">Features</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#about">About</a><a class="keep" href="mailto:careers@godstockss.in">Support</a></nav>
+<a class="signin-top" href="#auth">Sign in</a>
+</div>
+<div class="tick" role="region" aria-label="Market indices" aria-live="off"></div></header>
+
+<main>
+<section class="hero" aria-labelledby="h">
+<p class="eyebrow">DATA. INSIGHTS. BETTER DECISIONS.</p>
+<h1 id="h">Smarter investing.<br>Clearer insights.</h1>
+<p class="lede">Explore market intelligence, research, and data-driven insights designed to help you make more informed decisions.</p>
+<ul class="feats">
+<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-5 4 3 8-9M15 6h5v5"/></svg><div><b>Intelligent market analysis</b><span>Understand market movements, trends, and meaningful signals.</span></div></li>
+<li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><div><b>Research made simple</b><span>Explore useful insights without unnecessary complexity.</span></div></li>
+<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0112 0c0 6 2 7 2 7H4s2-1 2-7zM10 20h4"/></svg><div><b>Stay informed</b><span>Keep track of relevant opportunities and market updates.</span></div></li>
+</ul>
+<div class="preview" role="img" aria-label="Illustrative market overview with a line chart and sample watchlist">
+<div class="ph"><b>Market overview</b><span>Illustrative</span></div>
+<svg viewBox="0 0 480 130" preserveAspectRatio="none"><g stroke="#E3E3DC"><path d="M0 32H480M0 65H480M0 98H480"/></g><path d="M0 100L50 88L100 94L150 70L200 76L250 52L300 58L350 38L400 44L480 20L480 130L0 130Z" fill="#E8F0E9"/><path d="M0 100L50 88L100 94L150 70L200 76L250 52L300 58L350 38L400 44L480 20" fill="none" stroke="#124C38" stroke-width="2"/></svg>
+<div class="pr"><span>Sample stock A</span><span>1,234.50</span><span class="up">▲ +0.8%</span></div>
+<div class="pr"><span>Sample stock B</span><span>845.10</span><span class="dn">▼ −0.4%</span></div>
+<div class="note">Sample data for illustration only. Not a live feed or a recommendation.</div>
+</div>
+</section>
+
+<section class="panel" id="auth" aria-labelledby="t">
+<h2 id="t">Welcome back.</h2>
+<p class="sub" id="sub">Sign in to access your research and personalized dashboard.</p>
+<div role="tablist" aria-label="Authentication">
+<button role="tab" id="tab-in" aria-selected="true" aria-controls="form">Sign in</button>
+<button role="tab" id="tab-up" aria-selected="false" aria-controls="form" tabindex="-1">Create account</button>
+</div>
+<div class="alert" id="alert" role="alert"></div>
+<form id="form" novalidate>
+<div class="f"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" required aria-describedby="e-email"><div class="err" id="e-email"></div></div>
+<div class="f up-only" hidden><label for="mobile">Mobile number</label><input id="mobile" name="mobile" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-mobile"><div class="err" id="e-mobile"></div></div>
+<div class="f"><label for="pw">Password</label><div class="in"><input id="pw" name="password" type="password" autocomplete="current-password" required aria-describedby="e-pw"><button type="button" class="tg" aria-controls="pw" aria-label="Show password">Show</button></div><div class="err" id="e-pw"></div></div>
+<div class="f up-only" hidden><label for="pw2">Confirm password</label><input id="pw2" name="confirm" type="password" autocomplete="new-password" aria-describedby="e-pw2"><div class="err" id="e-pw2"></div></div>
+<div class="row in-only"><label><input type="checkbox" id="remember">Remember me</label><a href="#" id="forgot">Forgot password?</a></div>
+<button class="btn" type="submit" id="submit"><span class="spin" aria-hidden="true"></span><span id="lbl">Sign in</span></button>
+</form>
+<p class="alt" id="alt">New to GodStocks? <a href="#" id="swap">Create an account.</a></p>
+<p class="legal">By continuing you agree to the <a href="#terms" id="terms-link">Terms &amp; Conditions</a>.</p>
+</section>
+</main>
+
+<section class="sec" id="features" aria-labelledby="ft-h">
+<p class="eyebrow rv">FEATURES</p><h2 id="ft-h" class="rv" style="--d:.05s">Everything you need to research the market.</h2>
+<p class="intro rv" style="--d:.1s">Tools built for clarity: track what matters, learn as you go, and compete with other investors.</p>
+<div class="grid">
+<article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-5 4 3 8-9M15 6h5v5"/></svg></div><h3>Market overview</h3><p>Index levels for Sensex and Nifty at the top of every page, with a clean chart of the market’s direction.</p></article>
+<article class="card rv" style="--d:.08s"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></div><h3>Personal watchlist</h3><p>Save the stocks you follow, search and sort them instantly. Your list is tied to your account.</p></article>
+<article class="card rv" style="--d:.16s"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg></div><h3>AI research assistant</h3><p>Ask questions about markets and technical indicators in plain language. AI-assisted information, not advice.</p></article>
+<article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0zM17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"/></svg></div><h3>Tournaments</h3><p>Join contests, climb the leaderboard and see how you rank against other players.</p></article>
+<article class="card rv" style="--d:.08s"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h16a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2zM3 7l2-3h12M16 14h2"/></svg></div><h3>Wallet</h3><p>A transparent, append-only ledger. Every credit and debit is recorded and can’t be edited.</p></article>
+<article class="card rv" style="--d:.16s"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.5 3.2-5.5 6.5-5.5M17 8v6M14 11h6"/></svg></div><h3>Referrals</h3><p>Share your personal code. Invite friends and earn rewards when they join.</p></article>
+<article class="card rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div><h3>Secure by design</h3><p>Hashed passwords, protected sessions and rate-limited sign-in keep your account safe.</p></article>
+<article class="card rv" style="--d:.08s"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></div><h3>Market scanner <span class="badge">COMING SOON</span></h3><p>Screen the market for patterns and setups that match your criteria.</p></article>
+<article class="card rv" style="--d:.16s"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0112 0c0 6 2 7 2 7H4s2-1 2-7zM10 20h4"/></svg></div><h3>Alerts &amp; signals <span class="badge">COMING SOON</span></h3><p>Stay informed about relevant opportunities and market updates.</p></article>
+</div></section>
+
+<section class="sec" id="how" aria-labelledby="hw-h">
+<p class="eyebrow rv">HOW IT WORKS</p><h2 id="hw-h" class="rv" style="--d:.05s">Up and running in minutes.</h2>
+<div class="steps" style="margin-top:32px">
+<div class="step rv"><b>Create your account</b><span>Sign up with your email. No card needed to start.</span></div>
+<div class="step rv" style="--d:.12s"><b>Build your watchlist</b><span>Add the stocks you care about and keep an eye on the market.</span></div>
+<div class="step rv" style="--d:.24s"><b>Learn and compete</b><span>Ask the assistant, join tournaments and track your progress.</span></div>
+</div></section>
+
+<section class="sec" id="pricing" aria-labelledby="pr-h">
+<p class="eyebrow rv">PRICING</p><h2 id="pr-h" class="rv" style="--d:.05s">Simple, transparent plans.</h2>
+<p class="intro rv" style="--d:.1s">Choose the plan that fits you.</p>
+<div class="plans" id="plans"><div class="card plan rv"><p>Loading plans…</p></div></div></section>
+
+<section class="sec" id="about" aria-labelledby="ab-h" style="padding-bottom:0">
+<p class="eyebrow rv">ABOUT</p><h2 id="ab-h" class="rv" style="--d:.05s">Built for informed decisions.</h2>
+<p class="intro rv" style="--d:.1s">GodStocks is a market research and analysis platform for informational and educational use. It is not investment advice. Questions? <a href="mailto:careers@godstockss.in">careers@godstockss.in</a></p></section>
+
+<div class="cta rv"><h2>Ready to get started?</h2><p>Create your free account and start exploring the market.</p><a href="#auth" id="cta-go">Create account</a></div>
+
+<footer><div class="ft">
+<a class="logo" href="/"><svg width="18" height="18" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="5" fill="#124C38"/><path d="M5 18l5-5 4 3 7-8" fill="none" stroke="#F7F6F2" stroke-width="2.2" stroke-linecap="round"/></svg>GodStocks</a>
+<nav aria-label="Footer"><a href="#terms" id="terms-foot">Terms</a><a href="mailto:careers@godstockss.in">Contact</a></nav>
+<span class="c">© 2026 GodStocks. For informational and educational use only; not investment advice.</span>
+</div></footer>
+
+<dialog id="info" aria-labelledby="it"><h3 id="it"></h3><div id="ib"></div><button type="button" id="iclose">Close</button></dialog>
+
+<dialog id="terms" aria-labelledby="tt"><h3 id="tt">Terms &amp; Conditions</h3>
+<ul><li>GodStocks is a screening and analysis tool for informational and educational purposes only.</li><li>Signals and detections are not financial advice or a solicitation to buy or sell securities.</li><li>You are responsible for your own decisions; past performance does not guarantee future results.</li><li>You must be 18 or older to use the platform.</li></ul>
+<p style="font-size:13px;color:var(--muted)">This is a summary. Replace with a link to the full Terms from the existing site.</p>
+<button type="button" id="close">Close</button></dialog>
+
+<script>
+/* INTEGRATION: point these at the existing backend routes and redirect target.
+   Until configured, the form reports an error and NEVER simulates a login. */
+const USE_MOCK=false; /* set false to call the real endpoints below */
+const API={login:"/api/login",register:"/api/register",forgot:"/api/forgot",redirect:"/dashboard"};
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+async function mockFetch(url,o){await new Promise(r=>setTimeout(r,800));const b=JSON.parse(o.body||"{}");
+const users=store.get("gs_users")||[{email:"demo@godstocks.test",password:"Demo1234!"}];
+const res=(s)=>({ok:s<300,status:s});
+if(url===API.register){if(users.some(u=>u.email===b.email))return res(409);users.push({email:b.email,password:b.password,mobile:b.mobile});store.set("gs_users",users);store.set("gs_session",{email:b.email});return res(201)}
+if(url===API.login){if(!users.some(u=>u.email===b.email&&u.password===b.password))return res(401);store.set("gs_users",users);store.set("gs_session",{email:b.email});return res(200)}
+return res(404)}
+function showSession(email){const p=$("#auth");p.innerHTML='<div class="done"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29l8 8 14-16"/></svg><h2>You’re signed in.</h2><p class="sub"></p><button class="btn" id="out" type="button">Sign out</button></div>';p.querySelector(".sub").textContent="Signed in as "+email+". In production this redirects to your dashboard.";$("#out").onclick=()=>{store.set("gs_session",null);location.reload()}}
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let mode="in";
+function setMode(m){mode=m;const up=m==="up";
+$("#tab-in").setAttribute("aria-selected",!up);$("#tab-up").setAttribute("aria-selected",up);
+$("#tab-in").tabIndex=up?-1:0;$("#tab-up").tabIndex=up?0:-1;
+$$(".up-only").forEach(e=>e.hidden=!up);$$(".in-only").forEach(e=>e.hidden=up);
+$("#t").textContent=up?"Create your account.":"Welcome back.";
+$("#sub").textContent=up?"Register to access your research and personalized dashboard.":"Sign in to access your research and personalized dashboard.";
+$("#lbl").textContent=up?"Create account":"Sign in";
+$("#pw").autocomplete=up?"new-password":"current-password";
+$("#alt").innerHTML=up?'Already have an account? <a href="#" id="swap">Sign in.</a>':'New to GodStocks? <a href="#" id="swap">Create an account.</a>';
+$("#swap").onclick=e=>{e.preventDefault();setMode(up?"in":"up")};clearErrors()}
+function clearErrors(){$$(".err").forEach(e=>{e.textContent="";e.classList.remove("on")});$$("input").forEach(i=>i.removeAttribute("aria-invalid"));$("#alert").classList.remove("on")}
+function fieldErr(id,msg){const i=$("#"+id),e=$("#e-"+id);i.setAttribute("aria-invalid","true");e.textContent=msg;e.classList.add("on")}
+function banner(msg){const a=$("#alert");a.textContent=msg;a.classList.add("on")}
+$("#tab-in").onclick=()=>setMode("in");$("#tab-up").onclick=()=>setMode("up");$("#swap").onclick=e=>{e.preventDefault();setMode("up")};
+$(".tg").onclick=function(){const p=$("#pw"),s=p.type==="password";p.type=s?"text":"password";this.textContent=s?"Hide":"Show";this.setAttribute("aria-label",s?"Hide password":"Show password")};
+$("#form").addEventListener("submit",async e=>{e.preventDefault();clearErrors();
+const em=$("#email").value.trim(),pw=$("#pw").value;let bad=false;
+if(!/^\S+@\S+\.\S+$/.test(em)){fieldErr("email","Enter a valid email address.");bad=true}
+if(!pw){fieldErr("pw","Enter your password.");bad=true}
+if(mode==="up"){if(pw&&pw.length<8){fieldErr("pw","Use at least 8 characters.");bad=true}
+if($("#pw2").value!==pw){fieldErr("pw2","Passwords do not match.");bad=true}}
+if(bad){$("#form [aria-invalid]").focus();return}
+const url=mode==="up"?API.register:API.login;
+if(!url){banner("This page is not yet connected to the sign-in service. Set the API endpoints in the script.");return}
+const b=$("#submit");b.disabled=true;
+try{const body={email:em,password:pw};if(mode==="up")body.mobile=$("#mobile").value.trim();
+const r=await (USE_MOCK?mockFetch:fetch)(url,{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify(body)});
+if(r.ok){showSession(em);return}
+if(r.status===409){banner("An account with this email already exists. Try signing in.");return}
+banner(r.status===401||r.status===403?"The email or password is incorrect.":"We couldn’t complete that request. Please try again.")}
+catch{banner("Network error. Check your connection and try again.")}
+finally{b.disabled=false}});
+$("#forgot").onclick=e=>{e.preventDefault();clearErrors();const em=$("#email").value.trim();
+if(!/^\S+@\S+\.\S+$/.test(em)){fieldErr("email","Enter your email above, then select Forgot password.");$("#email").focus();return}
+if(USE_MOCK){const a=$("#alert");a.textContent="If an account exists for "+em+", a reset link would be sent. (Demo: no email is actually sent.)";a.classList.add("ok","on");setTimeout(()=>a.classList.remove("ok"),6000)}else location.href=API.forgot};
+const d=$("#terms");["#terms-link","#terms-foot"].forEach(s=>$(s).onclick=e=>{e.preventDefault();d.showModal()});$("#close").onclick=()=>d.close();
+/* ---- Demo application shell: illustrative sample data only ---- */
+const SAMPLE=[["Sample Co A",1234.5,.8],["Sample Co B",845.1,-.4],["Sample Co C",402.25,1.6],["Sample Co D",2310,-1.1],["Sample Co E",98.4,.2],["Sample Co F",640.8,-.7]];
+const LOGO='<svg width="24" height="24" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="5" fill="#124C38"/><path d="M5 18l5-5 4 3 7-8" fill="none" stroke="#F7F6F2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ICON={ov:'<path d="M4 13h6V4H4zM14 20h6V11h-6zM14 8h6V4h-6zM4 20h6v-4H4z"/>',wl:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',ac:'<circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/>'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=n=>n.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+function toast(m,err){const t=document.createElement("div");t.className="toast"+(err?" er":"");t.textContent=m;$(".toasts").appendChild(t);setTimeout(()=>{t.style.transition="opacity .2s";t.style.opacity=0;setTimeout(()=>t.remove(),220)},3500)}
+function series(n,s){let v=100;const a=[];for(let i=0;i<n;i++){v+=Math.sin(i*.7+s)*2+Math.cos(i*.31+s*2)*1.5+.35;a.push(v)}return a}
+function chart(rg){const n={"1W":7,"1M":30,"3M":90}[rg],d=series(n,n/10),mn=Math.min(...d),mx=Math.max(...d),W=700,H=200;
+const pts=d.map((v,i)=>[i/(n-1)*W,H-10-(v-mn)/(mx-mn)*(H-30)]);
+const l=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join("");
+return{d,pts,W,html:`<svg viewBox="0 0 ${W} ${H}" id="cs" role="img" aria-label="Illustrative index chart, ${rg}" style="width:100%;height:auto;display:block;touch-action:none"><g stroke="#E3E3DC"><path d="M0 40H${W}M0 100H${W}M0 160H${W}"/></g><path d="${l}L${W} ${H}L0 ${H}Z" fill="#E8F0E9" opacity=".7"/><path class="ln" pathLength="1" d="${l}" fill="none" stroke="#124C38" stroke-width="2"/><circle id="dot" r="4" fill="#124C38" stroke="#fff" stroke-width="2" style="display:none"/></svg><div id="tip" class="toast" style="display:none;position:absolute;animation:none;padding:3px 8px;font-size:12px;pointer-events:none"></div>`}}
+let WL=store.get("gs_wl")||SAMPLE.slice(0,3).map(r=>r[0]),sort={k:0,dir:1},q="";
+const wlist=()=>SAMPLE.filter(r=>WL.includes(r[0]));
+function table(list,rm){const L=list.filter(r=>r[0].toLowerCase().includes(q)).sort((a,b)=>(a[sort.k]>b[sort.k]?1:-1)*sort.dir);
+if(!L.length)return'<div class="empty">'+(q?"No matches for that search.":"Your watchlist is empty. Add a sample stock above.")+"</div>";
+return'<div style="overflow-x:auto"><table class="tbl"><thead><tr>'+["Name","Price","Change"].map((h,i)=>`<th scope="col" tabindex="0" data-k="${i}" aria-sort="${sort.k===i?(sort.dir>0?"ascending":"descending"):"none"}">${h}${sort.k===i?(sort.dir>0?" ↑":" ↓"):""}</th>`).join("")+(rm?"<th></th>":"")+"</tr></thead><tbody>"+L.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td class="${r[2]>=0?"up":"dn"}">${r[2]>=0?"▲ +":"▼ −"}${Math.abs(r[2]).toFixed(1)}%</td>${rm?`<td><button class="sm" data-rm="${r[0]}">Remove</button></td>`:""}</tr>`).join("")+"</tbody></table></div>"}
+function showSession(email){let view="ov",rg="1M",last="";
+document.body.innerHTML=`<div class="app"><aside class="side" aria-label="Main">${'<a class="logo" href="#">'+LOGO+"GodStocks</a>"}${[["ov","Overview"],["wl","Watchlist"],["ac","Account"]].map(([k,t])=>`<button class="nv" data-v="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>${t}</button>`).join("")}</aside><div><div class="top2"><div class="tick" role="region" aria-label="Market indices"></div><div class="pop"><button class="av" id="avb" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu">${esc(email[0].toUpperCase())}</button><div class="menu" id="mn" role="menu"><div>${esc(email)}</div><button role="menuitem" data-v="ac">Account</button><button role="menuitem" id="so">Sign out</button></div></div></div><main class="page" id="pg" tabindex="-1"></main>
+
+</div></div><div class="toasts" aria-live="polite"></div><dialog id="cf" aria-labelledby="cft"><h3 id="cft">Sign out?</h3><p style="color:var(--text2);font-size:14px;margin:0">You’ll need to sign in again to return to your dashboard.</p><div style="display:flex;gap:10px;margin-top:18px"><button class="sm" id="no" type="button" style="margin:0">Cancel</button><button class="sm pri" id="yes" type="button" style="margin:0">Sign out</button></div></dialog>`;
+const pg=$("#pg");let c;
+const refresh=()=>{$("#tb").innerHTML=table(wlist(),view==="wl")};
+function render(){$("#mn").classList.remove("on");$("#avb").setAttribute("aria-expanded","false");
+document.querySelectorAll(".nv").forEach(b=>b.dataset.v===view?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+let h="";
+if(view==="ov"){c=chart(rg);const d=c.d,ch=(d[d.length-1]/d[0]-1)*100;
+h=`<h1>Overview</h1><p class="sub">Sample data for demonstration. Not a live feed.</p><div class="stats"><div><small>Sample index</small><b>${fmt(d[d.length-1])}</b></div><div><small>Change over ${rg}</small><b class="${ch>=0?"up":"dn"}">${ch>=0?"+":"−"}${Math.abs(ch).toFixed(2)}%</b></div><div><small>Watchlist</small><b>${wlist().length} stocks</b></div></div><div class="chartbox"><div class="hd"><b style="font-weight:600">Market overview</b><div class="rng" role="group" aria-label="Date range">${["1W","1M","3M"].map(r=>`<button data-rg="${r}" aria-pressed="${r===rg}">${r}</button>`).join("")}</div></div>${c.html}</div><h2 style="font:600 16px var(--sans);margin:0 0 8px">Watchlist</h2><div id="tb">${table(wlist(),false)}</div>`}
+else if(view==="wl"){h=`<h1>Watchlist</h1><p class="sub">Add and remove sample stocks. Saved on this device.</p><div class="tools"><input id="q" type="text" placeholder="Search watchlist" aria-label="Search watchlist" value="${esc(q)}"><select id="ad" aria-label="Add a stock"><option value="">Add a stock…</option>${SAMPLE.filter(r=>!WL.includes(r[0])).map(r=>`<option>${r[0]}</option>`).join("")}</select></div><div id="tb">${table(wlist(),true)}</div>`}
+else{h=`<h1>Account</h1><p class="sub">Signed in as ${esc(email)}</p><div style="margin-top:24px;display:flex;gap:10px"><button class="sm pri" id="so2" type="button">Sign out</button></div>`}
+pg.innerHTML=h;paintTicker();
+if(last!==view){pg.style.animation="none";void pg.offsetWidth;pg.style.animation="";pg.focus({preventScroll:true});last=view}
+const s=$("#cs");if(s){s.onpointermove=e=>{const r=s.getBoundingClientRect(),i=Math.max(0,Math.min(c.d.length-1,Math.round((e.clientX-r.left)/r.width*(c.d.length-1)))),p=c.pts[i],dot=$("#dot"),tip=$("#tip"),b=$(".chartbox").getBoundingClientRect();
+dot.style.display="";dot.setAttribute("cx",p[0]);dot.setAttribute("cy",p[1]);tip.style.display="block";tip.textContent="Sample index "+fmt(c.d[i]);tip.style.left=Math.min(r.left-b.left+p[0]/c.W*r.width,b.width-150)+"px";tip.style.top=(r.top-b.top+p[1]/200*r.height-34)+"px"};
+s.onpointerleave=()=>{$("#dot").style.display="none";$("#tip").style.display="none"}}}
+document.body.onclick=e=>{const g=s=>e.target.closest(s);let x;
+if(!g(".pop")){$("#mn").classList.remove("on");$("#avb").setAttribute("aria-expanded","false")}
+if(g("#avb")){const o=$("#mn").classList.toggle("on");$("#avb").setAttribute("aria-expanded",o)}
+else if(x=g("[data-v]")){view=x.dataset.v;render()}
+else if(x=g("[data-rg]")){rg=x.dataset.rg;render()}
+else if(x=g("[data-rm]")){WL=WL.filter(n=>n!==x.dataset.rm);store.set("gs_wl",WL);render();toast(x.dataset.rm+" removed from your watchlist.")}
+else if(x=g("th[data-k]")){const k=+x.dataset.k;sort=sort.k===k?{k,dir:-sort.dir}:{k,dir:1};refresh()}
+else if(g("#so")||g("#so2")){$("#mn").classList.remove("on");$("#cf").showModal()}
+else if(g("#no"))$("#cf").close();
+else if(g("#yes")){fetch("/api/logout",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}).finally(()=>location.reload())}};
+document.body.oninput=e=>{if(e.target.id==="q"){q=e.target.value.toLowerCase();refresh()}};
+document.body.onchange=e=>{if(e.target.id==="ad"&&e.target.value){const n=e.target.value;WL.push(n);store.set("gs_wl",WL);render();toast(n+" added to your watchlist.")}};
+document.onkeydown=e=>{if(e.key==="Escape"){$("#mn").classList.remove("on");$("#avb").setAttribute("aria-expanded","false")}if(e.key==="Enter"&&e.target.matches&&e.target.matches("th[data-k]"))e.target.click()};
+render()}
+/* ---- Top navigation: info dialog ---- */
+const INFO={
+features:{t:"Features",h:'<ul><li>Personal watchlist saved to your account.</li><li>Market overview with index quotes at the top of every page.</li><li>AI research assistant that explains markets and indicators (AI-assisted information, not advice).</li><li>Tournaments with a leaderboard.</li><li>Referral codes and a wallet.</li></ul><p>Some features appear in your dashboard as they are released.</p>'},
+research:{t:"Research",h:'<p>Learn how markets and technical indicators work with the built-in AI assistant after you sign in.</p><p>GodStocks is an educational and informational tool. Nothing here is investment advice or a recommendation to buy or sell.</p>'},
+about:{t:"About",h:'<p>GodStocks is a market research and analysis platform for informational and educational use.</p><p>Questions? <a href="mailto:careers@godstockss.in">careers@godstockss.in</a></p>'}};
+async function openInfo(k){const d=$("#info");let x=INFO[k];
+if(k==="pricing"){x={t:"Pricing",h:"<p>Loading plans…</p>"};$("#it").textContent=x.t;$("#ib").innerHTML=x.h;d.showModal();
+try{const r=await fetch("/api/plans"),p=r.ok?await r.json():[];
+$("#ib").innerHTML=p.length?"<table>"+p.map(o=>`<tr><td>${esc(o.name)}<br><small style="color:var(--muted)">${o.duration_days} days</small></td><td>₹${(o.price_paise/100).toLocaleString("en-IN")}</td></tr>`).join("")+"</table>":"<p>Plans will be announced soon.</p>"}
+catch{$("#ib").innerHTML="<p>Couldn’t load plans. Please try again.</p>"}return}
+$("#it").textContent=x.t;$("#ib").innerHTML=x.h;if(!d.open)d.showModal()}
+document.addEventListener("click",e=>{const a=e.target.closest("[data-info]");if(a){e.preventDefault();openInfo(a.dataset.info)}if(e.target.id==="iclose")$("#info").close()});
+/* ---- Market index ticker: real data from /api/indices only; never fabricated ---- */
+const IDX_LABEL={SENSEX:"SENSEX",NIFTY:"NIFTY 50"};let IDX=null;
+function paintTicker(d){if(d)IDX=d;d=IDX;const html=Object.keys(IDX_LABEL).map(k=>{const q=d&&d[k];
+if(!q||q.status!=="ok")return`<span class="ti"><b>${IDX_LABEL[k]}</b><em>—</em></span>`;
+const up=q.change_pct>=0;return`<span class="ti"><b>${IDX_LABEL[k]}</b><span>${fmt(q.price)}</span><span class="${up?"up":"dn"}">${up?"▲ +":"▼ −"}${Math.abs(q.change_pct).toFixed(2)}%</span>${q.delayed?"<em>delayed</em>":""}</span>`}).join("")
++(d&&Object.values(d).some(q=>q.status==="ok")?"":'<span class="ts">Live index feed not connected</span>');
+$$(".tick").forEach(t=>t.innerHTML=html)}
+async function loadTicker(){let d=null;try{const r=await fetch("/api/indices");if(r.ok)d=await r.json()}catch{}paintTicker(d)}
+loadTicker();setInterval(loadTicker,30000);
+/* ---- Scroll reveal + live plans ---- */
+(function(){const els=$$(".rv");
+if(!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion: reduce)").matches){els.forEach(e=>e.classList.add("in"));return}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.15,rootMargin:"0px 0px -40px 0px"});
+els.forEach(e=>io.observe(e))})();
+(async function(){const box=$("#plans");if(!box)return;let p=[];try{const r=await fetch("/api/plans");if(r.ok)p=await r.json()}catch{}
+box.innerHTML=p.length?p.map((o,i)=>`<div class="card plan rv in" style="--d:${i*.08}s"><h3>${esc(o.name)}</h3><div class="pr2">₹${(o.price_paise/100).toLocaleString("en-IN")}</div><small>for ${o.duration_days} days</small></div>`).join(""):'<div class="card plan in rv"><h3>Plans coming soon</h3><p>We’re finalising our plans. Create an account to be first to know.</p></div>'})();
+$("#cta-go").onclick=()=>{setMode("up");setTimeout(()=>$("#email").focus({preventScroll:true}),500)};
+setMode("in");
+fetch("/api/me",{credentials:"include"}).then(r=>r.ok?r.json():null).then(u=>{if(u)showSession(u.email)}).catch(()=>{});
+</script>
+</body>
+</html>
